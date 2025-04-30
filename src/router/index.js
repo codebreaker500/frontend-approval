@@ -20,6 +20,12 @@ const router = createRouter({
           component: () => import('@/views/HomeView.vue'),
           meta: { requiresAuth: true },
         },
+        {
+          path: '/transactions/deposito',
+          name: 'deposito',
+          component: () => import('@/views/transactions/DepositoView.vue'),
+          meta: { requiresAuth: true },
+        },
       ],
     },
     {

@@ -68,9 +68,9 @@ const onFormSubmit = async (e) => {
     if (e.valid) {
         try {
             const result = await login(e.values.email, e.values.password);
-            localStorage.setItem('jwtToken', result.token); // Store the JWT token
+            localStorage.setItem('jwtToken', result.token);
             toast.add({ severity: 'success', summary: 'Login successful!', detail: 'You are now logged in.', life: 3000 });
-            router.push({ name: 'dashboard' }); // Redirect to the dashboard page
+            router.push({ name: 'dashboard' }); 
         } catch (error) {
             console.error('Login failed:', error);
             toast.add({ severity: 'error', summary: 'Login failed', detail: error.message || 'An error occurred.', life: 3000 });
