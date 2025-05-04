@@ -1,0 +1,55 @@
+name: Deploy to AWS Lightsail
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.9.0'
+      
+      - name: Write .env for Vite
+        working-directory: ./frontend
+        run: |
+          cat <<EOF > .env
+          VITE_API_BASE_URL=${{ vars.VITE_API_BASE_URL }}
+          VITE_SOCKET_URL=${{ vars.VITE_SOCKET_URL }}
+          VITE_API_KEY=${{ secrets.VITE_API_KEY }}
+          EOF
+          
+      # Build Vue.js frontend
+      - name: Install & Build Vue.js
+        working-directory: ./frontend
+        run: |
+          npm install
+          npm run build
+
+      # Upload Vue build output (dist folder)
+      - name: Upload Vue build output to Lightsail
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "frontend/dist/*"
+          target: "/var/www/frontend-approval"
+
+      - name: SSH and configure server
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "Reloading Nginx..."
+            sudo nginx -t && sudo systemctl reload nginx

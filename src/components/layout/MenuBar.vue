@@ -21,7 +21,7 @@
                 <button v-ripple class="relative overflow-hidden w-full border-0 bg-transparent flex items-start p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200">
                     <span class="inline-flex flex-col items-start">
                         <span class="font-bold">{{ profile.name }}</span>
-                        <span class="text-sm">{{ profile.role }}</span>
+                        <span class="text-sm">{{ profile.email }}</span>
                     </span>
                 </button>
             </template>
@@ -37,8 +37,9 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const profile = ref({
-    name: 'User',
-    role: 'Role'
+    name: 'Loading...',
+    role: 'Loading...',
+    email: 'Loading...'
 });
 
 const items = ref([
@@ -59,7 +60,7 @@ const items = ref([
             },
             {
                 label: 'Approval',
-                role : ['SETTLEMENT_ARRANGER'],
+                role : ['SETTLEMENT_ARRANGER', 'ASSISTANT_DEPUTY_INVESTMENT', 'DEPUTY_INVESTMENT', 'DIRECTOR_INVESTMENT'],
                 icon: 'pi pi-cog',
             },
             {
@@ -77,6 +78,11 @@ const items = ref([
     {
         label: 'User',
         items: [
+            {
+                label: 'Tanya Investasi',
+                icon: 'pi pi-question-circle',
+                route: '/chat-investasi'
+            },
             {
                 label: 'Logout',
                 icon: 'pi pi-sign-out',

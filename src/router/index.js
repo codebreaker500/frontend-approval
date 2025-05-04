@@ -21,6 +21,12 @@ const router = createRouter({
           meta: { requiresAuth: true },
         },
         {
+          path: '/chat-investasi',
+          name: 'chat',
+          component: () => import('@/views/chat/ChatInvestasiView.vue'),
+          meta: { requiresAuth: true },
+        },
+        {
           path: '/transactions/deposito',
           name: 'deposito',
           component: () => import('@/views/transactions/DepositoView.vue'),
