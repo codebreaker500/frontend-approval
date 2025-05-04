@@ -35,6 +35,9 @@ jobs:
           npm cache clean --force
           npm install
           npm run build
+          
+      - name: Check build output
+        run: ls -la ./dist
 
       # Upload Vue build output (dist folder)
       - name: Upload Vue build output to Lightsail
