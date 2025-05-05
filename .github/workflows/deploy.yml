@@ -47,7 +47,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "./dist/*"
-          target: "/var/www/frontend-approval"
+          target: "/home/ubuntu/app/frontend-approval"
 
       - name: SSH and configure server
         uses: appleboy/ssh-action@v0.1.8
@@ -56,5 +56,17 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            echo "Membuat folder tujuan jika belum ada..."
+            sudo mkdir -p /var/www/frontend-approval
+
+            echo "Menghapus file lama di /var/www/frontend-approval..."
+            sudo rm -rf /var/www/frontend-approval/*
+
+            echo "Menyalin file dari /home/ubuntu/app/frontend-approval ke /var/www/frontend-approval..."
+            sudo cp -r /home/ubuntu/app/frontend-approval/* /var/www/frontend-approval/
+
+            echo "Set hak kepemilikan jika diperlukan..."
+            sudo chown -R www-data:www-data /var/www/frontend-approval
+            
             echo "Reloading Nginx..."
             sudo nginx -t && sudo systemctl reload nginx
