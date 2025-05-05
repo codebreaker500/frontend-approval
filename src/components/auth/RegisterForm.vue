@@ -7,12 +7,33 @@
         </div>
   
         <!-- Title -->
-        <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">Login</h2>
+        <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">Register</h2>
   
         <!-- Form -->
         <Form v-slot="$form" :initialValues :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
+            <div class="flex flex-col gap-1">
+                <InputGroup>
+                    <InputText name="nik" type="text" placeholder="Nomor Induk Kependudukan" fluid />
+                    <InputGroupAddon>
+                        <Button icon="pi pi-search" severity="secondary" variant="text" />
+                    </InputGroupAddon>
+                </InputGroup>
+                <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{ $form.email.error.message }}</Message>
+            </div>
           <div class="flex flex-col gap-1">
-              <InputText name="email" type="text" placeholder="Username" fluid autocomplete="new-password" />
+              <InputText name="email" type="text" placeholder="Email" fluid autocomplete="new-password" />
+              <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{ $form.email.error.message }}</Message>
+          </div>
+          <div class="flex flex-col gap-1">
+              <InputText name="name" type="text" placeholder="Nama Lengkap" fluid autocomplete="new-password" />
+              <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{ $form.email.error.message }}</Message>
+          </div>
+          <div class="flex flex-col gap-1">
+              <InputText name="phoneNumber" type="text" placeholder="Nomor HP" fluid autocomplete="new-password" />
+              <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{ $form.email.error.message }}</Message>
+          </div>
+          <div class="flex flex-col gap-1">
+              <Textarea name="address" type="text" placeholder="Alamat Lengkap" fluid rows="3" cols="30" />
               <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{ $form.email.error.message }}</Message>
           </div>
           <div class="flex flex-col gap-1">
@@ -23,16 +44,11 @@
                   </ul>
               </Message>
           </div>
-          <Button type="submit" severity="secondary" label="Log In" />
+          
+          <Button type="submit" icon="pi pi-users" severity="secondary" label="Register" />
+          <Button as="a" label="Login" icon="pi pi-lock-open" href="https://vuejs.org/" target="_blank" rel="noopener" />
         </Form>
   
-        <!-- Additional Links -->
-        <div class="mt-4 text-center text-sm text-gray-600">
-          <p>
-            Don't have an account?
-            <a href="/auth/register" class="text-blue-500 hover:underline">Sign up</a>
-          </p>
-        </div>
       </div>
     </div>
 </template>
@@ -44,7 +60,7 @@ import { Form } from '@primevue/forms';
 import { z } from 'zod';
 import { useToast } from 'primevue/usetoast';
 import { useRouter } from 'vue-router'; // Import useRouter
-import { InputText, Password, Button, Message, Image } from 'primevue';
+import { InputText, Password, Button, Message, Image, Textarea, InputGroup, InputGroupAddon } from 'primevue';
 import { login } from '@/services/authService'; // Import the login service
 
 const toast = useToast();
@@ -52,6 +68,9 @@ const router = useRouter(); // Initialize the router
 
 const initialValues = ref({
     email: '',
+    nik: '',
+    address: '',
+    nikStatus: false,
     password: ''
 });
 
