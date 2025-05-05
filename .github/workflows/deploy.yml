@@ -63,10 +63,10 @@ jobs:
             sudo rm -rf /var/www/frontend-approval/*
 
             echo "Menyalin file dari /home/ubuntu/app/frontend-approval ke /var/www/frontend-approval..."
-            sudo cp -r /home/ubuntu/app/frontend-approval/* /var/www/frontend-approval/
+            sudo cp -r /home/ubuntu/app/frontend-approval/dist/* /var/www/frontend-approval/
 
             echo "Set hak kepemilikan jika diperlukan..."
             sudo chown -R www-data:www-data /var/www/frontend-approval
-            
+
             echo "Reloading Nginx..."
             sudo nginx -t && sudo systemctl reload nginx
