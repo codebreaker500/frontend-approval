@@ -21,28 +21,20 @@
                 <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{ $form.email.error.message }}</Message>
             </div>
           <div class="flex flex-col gap-1">
-              <InputText name="email" type="text" placeholder="Email" fluid autocomplete="new-password" />
+              <InputText name="email" type="text" placeholder="Email" fluid />
               <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{ $form.email.error.message }}</Message>
           </div>
           <div class="flex flex-col gap-1">
-              <InputText name="name" type="text" placeholder="Nama Lengkap" fluid autocomplete="new-password" />
+              <InputText name="name" type="text" placeholder="Nama Lengkap" fluid />
               <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{ $form.email.error.message }}</Message>
           </div>
           <div class="flex flex-col gap-1">
-              <InputText name="phoneNumber" type="text" placeholder="Nomor HP" fluid autocomplete="new-password" />
+              <InputMask id="phoneNumber" name="phoneNumber" mask="(628) 99-9999-9999" placeholder="(628) 99-9999-9999" fluid />
               <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{ $form.email.error.message }}</Message>
           </div>
           <div class="flex flex-col gap-1">
               <Textarea name="address" type="text" placeholder="Alamat Lengkap" fluid rows="3" cols="30" />
               <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{ $form.email.error.message }}</Message>
-          </div>
-          <div class="flex flex-col gap-1">
-              <Password name="password" placeholder="Password" :feedback="false" toggleMask fluid autocomplete="new-password" />
-              <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">
-                  <ul class="my-0 px-4 flex flex-col gap-1">
-                      <li v-for="(error, index) of $form.password.errors" :key="index">{{ error.message }}</li>
-                  </ul>
-              </Message>
           </div>
           
           <Button type="submit" icon="pi pi-users" severity="secondary" label="Register" />
@@ -59,19 +51,20 @@ import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { Form } from '@primevue/forms';
 import { z } from 'zod';
 import { useToast } from 'primevue/usetoast';
-import { useRouter } from 'vue-router'; // Import useRouter
-import { InputText, Password, Button, Message, Image, Textarea, InputGroup, InputGroupAddon } from 'primevue';
-import { login } from '@/services/authService'; // Import the login service
+import { useRouter } from 'vue-router'; 
+import { InputText, Button, Message, Image, Textarea, InputGroup, InputGroupAddon, InputMask  } from 'primevue';
+import { login } from '@/services/authService'; 
 
 const toast = useToast();
-const router = useRouter(); // Initialize the router
+const router = useRouter(); 
 
 const initialValues = ref({
     email: '',
     nik: '',
     address: '',
     nikStatus: false,
-    password: ''
+    phoneNumber: '',
+    name: ''
 });
 
 const resolver = zodResolver(
@@ -87,7 +80,6 @@ const onFormSubmit = async (e) => {
     if (e.valid) {
         try {
             const result = await login(e.values.email, e.values.password);
-            localStorage.setItem('jwtToken', result.token);
             toast.add({ severity: 'success', summary: 'Login successful!', detail: 'You are now logged in.', life: 3000 });
             router.push({ name: 'dashboard' }); 
         } catch (error) {

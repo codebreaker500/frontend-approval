@@ -17,6 +17,12 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
+      path: '/auth/verification',
+      name: 'verification',
+      component: () => import('@/views/auth/OTPVerificationsView.vue'),
+      meta: { requiresAuth: false },
+    },
+    {
       path: '/',
       component: AppLayoutVue,
       children: [
